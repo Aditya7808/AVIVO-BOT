@@ -1,0 +1,16 @@
+Machine Learning Engineering — Deployment and Serving FAQ
+
+Q: What is the difference between model training and model serving?
+Training is the offline process of optimizing model weights on a dataset. Serving (or inference) is the online process of using those weights to generate predictions for real user inputs. Training requires GPU clusters and hours to days of compute. Serving requires low latency — typically under 200ms per request — and can often run on CPU for smaller models.
+
+Q: What is quantization and why does it matter for local LLMs?
+Quantization reduces the numerical precision of model weights from 32-bit or 16-bit floats to 8-bit or 4-bit integers. This shrinks memory footprint by 2-8x and speeds up inference. A 7B parameter model at full precision needs ~14GB VRAM; at 4-bit quantization it needs roughly 4GB, making it runnable on consumer GPUs. The quality impact is minimal for most tasks.
+
+Q: What is RAG (Retrieval-Augmented Generation)?
+RAG is a pattern where a language model's response is grounded in retrieved documents rather than solely its training data. At query time, relevant document chunks are retrieved from a vector store and injected into the prompt as context. This allows the model to answer questions about private or recent data it was never trained on, while reducing hallucinations.
+
+Q: How do vector embeddings work?
+An embedding model converts text into a dense numeric vector (typically 384 to 1536 dimensions) such that semantically similar texts map to nearby points in vector space. Similarity is measured via cosine distance. This allows finding "similar" content without exact keyword matching. Models like all-MiniLM-L6-v2 produce 384-dimensional vectors with strong semantic quality.
+
+Q: What is the difference between chunking strategies?
+Fixed-size chunking splits text every N tokens regardless of content boundaries. Sentence-based chunking respects sentence boundaries. Recursive character splitting tries paragraph, then sentence, then word boundaries. Overlapping chunks (where each chunk repeats some tokens from the previous one) helps prevent context loss at boundaries. For FAQ-style documents, paragraph-level chunking works best.

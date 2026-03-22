@@ -1,0 +1,16 @@
+Python REST API Development FAQ
+
+Q: What is the difference between Flask and FastAPI?
+Flask is a micro-framework that gives you full control over structure. FastAPI is built on Starlette and Pydantic, offering automatic request validation, OpenAPI docs generation, and async support out of the box. For high-throughput APIs, FastAPI is generally preferred. Flask is better when you need a minimal setup with fewer abstractions.
+
+Q: How do you handle authentication in a REST API?
+The most common pattern is JWT (JSON Web Tokens). The client authenticates with credentials, receives a signed token, and sends it in the Authorization header on subsequent requests. The server validates the signature without hitting a database. For service-to-service auth, API keys or OAuth2 client credentials flow are preferred.
+
+Q: What is the correct HTTP status code for resource creation?
+201 Created. The response should include a Location header pointing to the new resource, and optionally return the created object in the body. 200 OK is for successful reads or updates that return data. Never use 200 for POST responses that create a new resource.
+
+Q: How should errors be structured in API responses?
+Use a consistent envelope: a top-level "error" object with fields like code, message, and optionally details. Always return machine-readable error codes alongside human-readable messages. Avoid leaking stack traces or internal paths in production error responses.
+
+Q: What is rate limiting and how is it implemented?
+Rate limiting restricts how many requests a client can make in a time window. Common strategies include token bucket and sliding window algorithms. In Python, libraries like slowapi (for FastAPI) or flask-limiter handle this. Limits should be returned in response headers: X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset.

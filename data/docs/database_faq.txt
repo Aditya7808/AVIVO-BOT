@@ -1,0 +1,13 @@
+Database and Storage Engineering FAQ
+
+Q: When should you use SQL vs NoSQL?
+Use SQL (PostgreSQL, SQLite) when your data has clear relational structure, you need ACID transactions, and your query patterns are known upfront. Use NoSQL (MongoDB, DynamoDB) when your data is document-like, schema evolves rapidly, or you need horizontal write scaling. The "NoSQL is faster" claim is context-dependent — PostgreSQL with proper indexing outperforms many NoSQL stores for read-heavy workloads.
+
+Q: What is a database index and what are its trade-offs?
+An index is a separate data structure (typically a B-tree) that speeds up row lookups on a column at the cost of additional storage and slower writes. Without an index, a query on a non-primary-key column requires a full table scan. Adding indexes on every column is wrong — each index slows down INSERT, UPDATE, and DELETE operations. Index only columns that appear in WHERE clauses or JOIN conditions with high cardinality.
+
+Q: What is connection pooling?
+Opening a database connection is expensive (authentication, TCP handshake, session setup). A connection pool maintains a set of pre-opened connections and lends them to application threads. After use, connections are returned to the pool rather than closed. Libraries like SQLAlchemy and psycopg3 support pooling natively. Pool size should be tuned to the number of concurrent workers, not maximized.
+
+Q: What is the difference between optimistic and pessimistic locking?
+Pessimistic locking acquires a lock before reading data and holds it until the transaction commits, preventing any concurrent modification. Optimistic locking reads data without locking, then at write time checks whether the data changed (using a version column or timestamp) and retries if it did. Pessimistic locking is safer under high contention; optimistic locking has better throughput when conflicts are rare.

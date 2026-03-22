@@ -1,0 +1,16 @@
+Software Engineering Best Practices
+
+Q: What is the single responsibility principle?
+Each module, class, or function should have exactly one reason to change. This means a function that fetches data should not also format it and write it to a database. Keeping responsibilities narrow makes code easier to test, refactor, and understand. When a function does too many things, split it and inject dependencies.
+
+Q: What is dependency injection and why should I use it?
+Instead of constructing dependencies inside a class, pass them in from outside. This makes the class testable (you can inject mock dependencies) and decouples components (swap one database for another without changing business logic). In Python, this often means passing config objects or clients into class constructors rather than importing globals.
+
+Q: How should you structure error handling in production code?
+Define custom exception classes for distinct error categories rather than raising generic exceptions. Catch exceptions at the boundary layers (HTTP handlers, CLI entry points), log the full traceback internally, and return only safe, user-facing messages externally. Never silently swallow errors — always log them at minimum.
+
+Q: What is the purpose of a circuit breaker pattern?
+A circuit breaker wraps an external call (an API, a database). If the call fails repeatedly, the circuit "opens" and subsequent calls are rejected immediately without hitting the downstream service, giving it time to recover. After a timeout, the circuit moves to "half-open" and allows one test request through. This prevents cascading failures in distributed systems.
+
+Q: When should you use caching and what are its risks?
+Cache when a computation is expensive and the inputs are likely to repeat. Risks include stale data (if the underlying source changes but the cache does not), cache stampede (many requests hitting the source simultaneously when cache expires), and memory pressure. Always set TTLs and have a cache invalidation strategy before adding caching.
