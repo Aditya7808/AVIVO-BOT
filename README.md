@@ -7,6 +7,13 @@
   <img src="media/web_ui_hero.png" width="100%" />
 </p>
 
+### 📱 Integrated with Telegram
+Access the same RAG intelligence directly from your phone. The bot supports structured commands and plain-text natural language queries.
+
+<p align="center">
+  <img src="media/demo1.jpg" width="60%" />
+</p>
+
 A lightweight GenAI bot that answers questions from a local documentation knowledge base using a Retrieval-Augmented Generation (RAG) pipeline. Designed strictly as an on-premise, cloud-independent service. No cloud vector databases — everything runs locally.
 
 ---
